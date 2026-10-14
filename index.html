@@ -3,271 +3,348 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capital SP — Carregando</title>
+<title>Capital Roleplay — Carregando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+ * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html, body {
-        width: 100%; height: 100%;
-        overflow: hidden;
-        font-family: 'Segoe UI', Arial, sans-serif;
-        background: #050101;
-        user-select: none;
-        color: #fff;
-    }
+ html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'Rajdhani', 'Segoe UI', Arial, sans-serif;
+  background: #000;
+  user-select: none;
+  color: #fff;
+ }
 
-    /* ============ ARTE DE FUNDO ============ */
-    /* Usa fundo.jpg se existir; senão, a arte vetorial grunge que vem junto */
-    .fundo {
-        position: fixed; inset: -4%;   /* margem pro zoom não vazar borda */
-        background-image: url('fundo.jpg'), url('fundo.svg');
-        background-size: cover, cover;
-        background-position: center, center;
-        z-index: 0;
-        animation: kenburns 40s ease-in-out infinite alternate;
-    }
-    /* Zoom cinematográfico lento */
-    @keyframes kenburns {
-        0%   { transform: scale(1) translate(0, 0); }
-        100% { transform: scale(1.09) translate(-1%, -1.2%); }
-    }
+ /* ============ VÍDEO DE FUNDO (arte oficial Capital) ============ */
+ .fundo-video {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  animation: fadeZoom 1.6s ease-out both;
+ }
+ @keyframes fadeZoom {
+  0%   { opacity: 0; transform: scale(1.06); filter: blur(6px); }
+  100% { opacity: 1; transform: scale(1);   filter: blur(0); }
+ }
 
-    /* Fundo reserva (se a imagem não existir) */
-    .reserva {
-        position: fixed; inset: 0; z-index: -1;
-        background: radial-gradient(ellipse at 50% 100%, #2a0505 0%, #050101 70%);
-    }
+ /* Vinheta sutil + gradiente inferior pra ler a UI sem cobrir a arte */
+ .overlay {
+  position: fixed; inset: 0; z-index: 2; pointer-events: none;
+  background:
+   linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 22%, transparent 45%),
+   radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.45) 100%);
+  opacity: 0; animation: fadeSuave 1.8s ease-out 0.4s both;
+ }
+ @keyframes fadeSuave { 0%{opacity:0;} 100%{opacity:1;} }
 
-    /* Vinheta pra dar profundidade */
-    .vinheta {
-        position: fixed; inset: 0; z-index: 3; pointer-events: none;
-        background: radial-gradient(ellipse at center, transparent 45%, rgba(10, 0, 0, 0.6) 100%);
-    }
+ /* ============ BLOCO DE CARREGAMENTO (inferior) ============ */
+ .carregamento {
+  position: fixed; z-index: 12;
+  bottom: 42px; left: 50%; transform: translateX(-50%);
+  width: min(760px, 82vw); text-align: center;
+  animation: subir 1s cubic-bezier(.2,.9,.3,1) 0.6s both;
+ }
+ @keyframes subir {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(30px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+ }
 
-    /* ============ NEBLINA ============ */
-    .neblina {
-        position: fixed; z-index: 2;
-        width: 60vw; height: 40vh;
-        border-radius: 50%;
-        background: radial-gradient(ellipse, rgba(255, 40, 40, 0.08), transparent 70%);
-        filter: blur(30px);
-        pointer-events: none;
-    }
-    .neblina.n1 { top: 55%; left: -20vw; animation: neblinar1 26s ease-in-out infinite alternate; }
-    .neblina.n2 { top: 20%; right: -25vw; animation: neblinar2 34s ease-in-out infinite alternate; }
-    @keyframes neblinar1 { 0% {transform: translateX(0);} 100% {transform: translateX(45vw);} }
-    @keyframes neblinar2 { 0% {transform: translateX(0);} 100% {transform: translateX(-40vw);} }
+ /* Status que cicla (acima da barra) */
+ .status {
+  height: 20px; margin-bottom: 12px;
+  font-size: 13px; font-weight: 600; letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.95);
+  transition: opacity .35s ease, transform .35s ease;
+ }
+ .status.trocando { opacity: 0; transform: translateY(-5px); }
 
-    /* ============ LUZES PISCANDO ============ */
-    .luz {
-        position: fixed; z-index: 2;
-        border-radius: 50%;
-        pointer-events: none;
-        animation: piscar linear infinite;
-    }
-    @keyframes piscar {
-        0%, 100% { opacity: 0.1; }
-        50%      { opacity: 1; }
-    }
+ /* Barra de progresso fina e clean */
+ .barra-fundo {
+  position: relative;
+  width: 100%; height: 3px;
+  background: rgba(255,255,255,0.14);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+ }
+ .barra {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #7a0000 0%, #ff2d2d 60%, #ff6a6a 100%);
+  border-radius: 3px;
+  box-shadow: 0 0 14px rgba(255,45,45,0.9), 0 0 4px rgba(255,45,45,1);
+  transition: width .4s ease;
+ }
+ /* Brilho que corre na barra */
+ .barra::after {
+  content: ''; position: absolute; top: 0; left: -40%;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+  animation: brilho 2.2s linear infinite;
+ }
+ @keyframes brilho { 0%{left:-40%;} 100%{left:110%;} }
 
-    /* ============ HELICÓPTERO ============ */
-    .heli {
-        position: fixed; z-index: 4;
-        top: 12%; left: 0;
-        width: 90px;
-        opacity: 0;
-        animation: voar 22s linear infinite;
-        animation-delay: 4s;
-        pointer-events: none;
-    }
-    @keyframes voar {
-        0%   { transform: translate(-15vw, 0); opacity: 0; }
-        4%   { opacity: 1; }
-        50%  { transform: translate(48vw, -4vh); }
-        96%  { opacity: 1; }
-        100% { transform: translate(115vw, -7vh); opacity: 0; }
-    }
-    .heli .luz-heli {
-        position: absolute; bottom: 2px; left: 50%;
-        width: 5px; height: 5px; border-radius: 50%;
-        background: #ff2222;
-        box-shadow: 0 0 8px #ff2222;
-        animation: piscar 1s linear infinite;
-    }
+ .info-baixo {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 10px;
+  font-size: 12px; font-weight: 600; letter-spacing: 2px;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+ }
+ .porcentagem { color: #fff; font-weight: 700; }
 
-    /* ============ REFLEXO NO CARRO ============ */
-    .reflexo {
-        position: fixed; z-index: 3;
-        bottom: 8%; left: -30%;
-        width: 45%; height: 35%;
-        background: linear-gradient(105deg, transparent 30%, rgba(255, 60, 60, 0.10) 50%, transparent 70%);
-        transform: skewX(-15deg);
-        animation: varrer 9s ease-in-out infinite;
-        pointer-events: none;
-    }
-    @keyframes varrer {
-        0%, 100% { transform: translateX(0) skewX(-15deg); }
-        50%      { transform: translateX(60%) skewX(-15deg); }
-    }
+ /* ============ FRASE DE BOAS-VINDAS (discreta, topo) ============ */
+ .welcome {
+  position: fixed; z-index: 10;
+  top: 34px; left: 50%; transform: translateX(-50%);
+  text-align: center;
+  animation: subir 1s ease 0.8s both;
+ }
+ .welcome .frase {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: 6px;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+  transition: opacity .4s ease, transform .4s ease;
+ }
+ .welcome .frase.trocando { opacity: 0; transform: translateY(-6px); }
 
-    /* ============ BARRA DE CARREGAMENTO ============ */
-    .area-loading {
-        position: fixed; z-index: 12;
-        bottom: 12.5vh; left: 50%; transform: translateX(-50%);
-        width: min(500px, 60vw); text-align: center;
-    }
-    .barra-fundo {
-        width: 100%; height: 9px;
-        background: rgba(0, 0, 0, 0.6);
-        border-radius: 999px; overflow: hidden;
-        border: 1px solid rgba(255, 60, 60, 0.45);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-    }
-    .barra {
-        height: 100%; width: 0%;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #5c0000, #d90000, #ff5c5c);
-        background-size: 200% 100%;
-        animation: correr 1.6s linear infinite;
-        box-shadow: 0 0 16px rgba(217, 0, 0, 0.9);
-        transition: width .4s ease;
-    }
-    @keyframes correr { 0% {background-position:0% 0;} 100% {background-position:200% 0;} }
-    .porcentagem {
-        margin-top: 8px;
-        font-size: 12px; letter-spacing: 4px; font-weight: 700;
-        color: rgba(255, 170, 170, 0.9);
-        text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-    }
+ /* ============ DISCORD (canto inferior esquerdo) ============ */
+ .social {
+  position: fixed; z-index: 14;
+  bottom: 42px; left: 40px;
+  display: flex; flex-direction: column; gap: 8px;
+  animation: fadeSuave 1s ease 1.2s both;
+ }
+ .social a {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.85); text-decoration: none;
+  font-size: 13px; font-weight: 600; letter-spacing: 1px;
+  padding: 8px 14px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,45,45,0.35);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  transition: all .25s ease;
+ }
+ .social a:hover {
+  border-color: rgba(255,45,45,0.9);
+  background: rgba(122,0,0,0.4);
+  transform: translateY(-2px);
+ }
 
-    /* ============ PLAYER DE MÚSICA ============ */
-    .player {
-        position: fixed; z-index: 12;
-        bottom: 22px; left: 24px;
-        display: flex; align-items: center; gap: 10px;
-        background: rgba(20, 2, 2, 0.7);
-        border: 1px solid rgba(255, 60, 60, 0.45);
-        padding: 8px 14px; border-radius: 999px;
-        backdrop-filter: blur(6px);
-    }
-    .player button {
-        background: none; border: none; cursor: pointer;
-        font-size: 18px; color: #fff;
-    }
-    .player input[type=range] { width: 90px; accent-color: #d90000; cursor: pointer; }
-    .nota { animation: girar 3s linear infinite; display: inline-block; }
-    @keyframes girar { 0%{transform:rotate(0);} 100%{transform:rotate(360deg);} }
+ /* ============ MÚSICA (canto inferior direito) ============ */
+ .musica {
+  position: fixed; z-index: 14;
+  bottom: 42px; right: 40px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,45,45,0.35);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  animation: fadeSuave 1s ease 1.2s both;
+ }
+ .musica .nota { font-size: 14px; }
+ .musica button {
+  background: none; border: none; color: #fff;
+  font-size: 16px; cursor: pointer; line-height: 1;
+ }
+ .musica input[type=range] {
+  width: 90px; height: 4px;
+  -webkit-appearance: none; appearance: none;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px; outline: none; cursor: pointer;
+ }
+ .musica input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #ff2d2d; box-shadow: 0 0 8px rgba(255,45,45,0.9);
+ }
+ .musica input[type=range]::-moz-range-thumb {
+  width: 12px; height: 12px; border: none; border-radius: 50%;
+  background: #ff2d2d; box-shadow: 0 0 8px rgba(255,45,45,0.9);
+ }
 
-    .discord-rodape {
-        position: fixed; z-index: 12;
-        bottom: 26px; right: 24px;
-        background: rgba(20, 2, 2, 0.7);
-        border: 1px solid rgba(255, 60, 60, 0.45);
-        padding: 8px 14px; border-radius: 999px;
-        backdrop-filter: blur(6px);
-        font-size: 13px; letter-spacing: 1px;
-        color: rgba(255,255,255,0.85);
-    }
-    .discord-rodape b { color: #ff5c5c; }
+ /* ============ CANTOS DECORATIVOS (moldura sutil) ============ */
+ .canto { position: fixed; z-index: 5; width: 54px; height: 54px; pointer-events: none; opacity: 0; animation: fadeSuave 1s ease-out 1.4s both; }
+ .canto.tl { top: 24px; left: 24px;  border-top: 2px solid rgba(255,45,45,0.55); border-left: 2px solid rgba(255,45,45,0.55); }
+ .canto.tr { top: 24px; right: 24px; border-top: 2px solid rgba(255,45,45,0.55); border-right: 2px solid rgba(255,45,45,0.55); }
+ .canto.bl { bottom: 24px; left: 24px;  border-bottom: 2px solid rgba(255,45,45,0.55); border-left: 2px solid rgba(255,45,45,0.55); }
+ .canto.br { bottom: 24px; right: 24px; border-bottom: 2px solid rgba(255,45,45,0.55); border-right: 2px solid rgba(255,45,45,0.55); }
+
+ @media (max-width: 720px) {
+  .social, .musica { display: none; }
+ }
 </style>
 </head>
 <body>
 
-    <div class="reserva"></div>
-    <div class="fundo"></div>
-    <div class="vinheta"></div>
+ <!-- ARTE OFICIAL: vídeo animado Capital Roleplay -->
+ <video class="fundo-video" autoplay loop muted playsinline>
+  <source src="fundo.mp4" type="video/mp4">
+  <source src="fundo-2min.mp4" type="video/mp4">
+ </video>
 
-    <!-- Neblina -->
-    <div class="neblina n1"></div>
-    <div class="neblina n2"></div>
+ <div class="overlay"></div>
 
-    <!-- Helicóptero cruzando o céu -->
-    <svg class="heli" viewBox="0 0 100 40">
-        <g fill="#0a0202">
-            <ellipse cx="38" cy="22" rx="22" ry="10"/>
-            <rect x="55" y="19" width="34" height="5" rx="2"/>
-            <polygon points="88,12 94,12 92,26 86,26"/>
-            <rect x="14" y="8" width="48" height="3" rx="1.5"/>
-            <rect x="36" y="3" width="3" height="8"/>
-            <rect x="24" y="31" width="30" height="3" rx="1.5"/>
-            <rect x="28" y="28" width="3" height="5"/>
-            <rect x="48" y="28" width="3" height="5"/>
-        </g>
-        <circle class="luz-heli" cx="38" cy="33" r="2.5" fill="#ff2222"/>
-    </svg>
+ <!-- Moldura de cantos -->
+ <div class="canto tl"></div>
+ <div class="canto tr"></div>
+ <div class="canto bl"></div>
+ <div class="canto br"></div>
 
-    <!-- Reflexo de luz no carro -->
-    <div class="reflexo"></div>
+ <!-- Frase de boas-vindas -->
+ <div class="welcome">
+  <div class="frase" id="frase">SEJA BEM-VINDO AO NOSSO MUNDO</div>
+ </div>
 
-    <!-- Barra de carregamento (em cima da da arte) -->
-    <div class="area-loading">
-        <div class="barra-fundo"><div class="barra" id="barra"></div></div>
-        <div class="porcentagem" id="porcentagem">0%</div>
-    </div>
+ <!-- Bloco de carregamento -->
+ <div class="carregamento">
+  <div class="status" id="status">Conectando ao servidor</div>
+  <div class="barra-fundo"><div class="barra" id="barra"></div></div>
+  <div class="info-baixo">
+   <div class="recurso" id="recurso">inicializando...</div>
+   <div class="porcentagem"><span id="porcentagem">0</span>%</div>
+  </div>
+ </div>
 
-    <!-- Player de música -->
-    <div class="player">
-        <span class="nota">🎵</span>
-        <button id="btnSom" title="Ligar/desligar som">🔊</button>
-        <input type="range" id="volume" min="0" max="100" value="40">
-    </div>
+ <!-- Discord -->
+ <div class="social">
+  <a href="https://discord.gg/SwUFVH6r3" target="_blank" rel="noopener">
+   <span>💬</span> discord.gg/SwUFVH6r3
+  </a>
+ </div>
 
-    <div class="discord-rodape">💬 <b>discord.gg/seu-discord</b></div>
+ <!-- Música -->
+ <div class="musica">
+  <span class="nota">🎵</span>
+  <button id="btnSom" title="Ligar/desligar som">🔊</button>
+  <input type="range" id="volume" min="0" max="100" value="40">
+ </div>
 
-    <!-- MÚSICA: coloque um arquivo musica.mp3 nesta pasta! -->
-    <audio id="musica" loop>
-        <source src="musica.mp3" type="audio/mpeg">
-    </audio>
+ <!-- MÚSICA: coloque um arquivo musica.mp3 nesta pasta! -->
+ <audio id="musica" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+ </audio>
 
 <script>
-    // ===== Luzes da cidade piscando =====
-    const coresLuz = ['#ff6b6b', '#ffffff', '#ffb3b3', '#d90000'];
-    for (let i = 0; i < 28; i++) {
-        const l = document.createElement('div');
-        l.className = 'luz';
-        const t = Math.random() * 2.5 + 1.5;
-        const cor = coresLuz[Math.floor(Math.random() * coresLuz.length)];
-        l.style.width = t + 'px'; l.style.height = t + 'px';
-        // concentra nas laterais/baixo
-        const lado = Math.random();
-        l.style.left = lado < 0.4 ? (Math.random() * 22) + 'vw'
-                     : lado < 0.8 ? (72 + Math.random() * 26) + 'vw'
-                     : (Math.random() * 100) + 'vw';
-        l.style.top = (45 + Math.random() * 50) + 'vh';
-        l.style.background = cor;
-        l.style.boxShadow = `0 0 ${t * 3}px ${cor}`;
-        l.style.animationDuration = (Math.random() * 4 + 2) + 's';
-        l.style.animationDelay = (Math.random() * 4) + 's';
-        document.body.appendChild(l);
-    }
+ // ===== Detecta se está rodando dentro do FiveM =====
+ const noFiveM = typeof window.invokeNative === 'function';
 
-    // ===== Música =====
-    const musica = document.getElementById('musica');
-    const btnSom = document.getElementById('btnSom');
-    const volume = document.getElementById('volume');
-    musica.volume = 0.4;
-    const tocar = () => musica.play().catch(() => {});
-    tocar();
-    document.addEventListener('click', tocar, { once: true });
-    btnSom.onclick = () => {
-        musica.muted = !musica.muted;
-        btnSom.textContent = musica.muted ? '🔇' : '🔊';
-    };
-    volume.oninput = () => { musica.volume = volume.value / 100; musica.muted = false; btnSom.textContent = '🔊'; };
+ // ===== Música =====
+ const musica = document.getElementById('musica');
+ const btnSom = document.getElementById('btnSom');
+ const volume = document.getElementById('volume');
+ musica.volume = 0.4;
+ const tocar = () => musica.play().catch(() => {});
+ tocar();
+ document.addEventListener('click', tocar, { once: true });
+ btnSom.onclick = () => {
+  musica.muted = !musica.muted;
+  btnSom.textContent = musica.muted ? '🔇' : '🔊';
+ };
+ volume.oninput = () => { musica.volume = volume.value / 100; musica.muted = false; btnSom.textContent = '🔊'; };
 
-    // ===== Barra de progresso =====
-    const barra = document.getElementById('barra');
-    const porcentagem = document.getElementById('porcentagem');
-    let progresso = 0;
-    (function avancar() {
-        const restante = 95 - progresso;
-        progresso += Math.random() * (restante * 0.08) + 0.3;
-        if (progresso > 95) progresso = 95;
-        const v = Math.floor(progresso);
-        barra.style.width = v + '%';
-        porcentagem.textContent = v + '%';
-        setTimeout(avancar, 300 + Math.random() * 500);
-    })();
+ // ===== Status que cicla =====
+ const statusEl = document.getElementById('status');
+ const recursoEl = document.getElementById('recurso');
+ const listaStatus = [
+  'Conectando ao servidor',
+  'Carregando mapas',
+  'Sincronizando jogadores',
+  'Preparando veículos',
+  'Carregando scripts',
+  'Otimizando recursos',
+  'Quase pronto'
+ ];
+ const listaRecursos = [
+  'capital_core', 'capital_vehicles', 'capital_housing',
+  'capital_jobs', 'capital_garage', 'capital_hud',
+  'capital_bank', 'capital_police', 'capital_medical'
+ ];
+ let idxStatus = 0;
+ function trocarStatus() {
+  statusEl.classList.add('trocando');
+  setTimeout(() => {
+   idxStatus = (idxStatus + 1) % listaStatus.length;
+   statusEl.textContent = listaStatus[idxStatus];
+   recursoEl.textContent = listaRecursos[Math.floor(Math.random() * listaRecursos.length)];
+   statusEl.classList.remove('trocando');
+  }, 350);
+ }
+ setInterval(trocarStatus, 2600);
+
+ // ===== Mensagens de boas-vindas rotativas =====
+ const fraseEl = document.getElementById('frase');
+ const frases = [
+  'SEJA BEM-VINDO AO NOSSO MUNDO',
+  'RESPEITO É A BASE DE TUDO',
+  'DEUS NO COMANDO SEMPRE',
+  'A CITY MAIS DIFFERENTE DO BRASIL',
+  'BOA JOGADA, BOA HISTORIA'
+ ];
+ let idxFrase = 0;
+ setInterval(() => {
+  fraseEl.classList.add('trocando');
+  setTimeout(() => {
+   idxFrase = (idxFrase + 1) % frases.length;
+   fraseEl.textContent = frases[idxFrase];
+   fraseEl.classList.remove('trocando');
+  }, 450);
+ }, 5000);
+
+ // ===== Barra de progresso =====
+ const barra = document.getElementById('barra');
+ const porcentagem = document.getElementById('porcentagem');
+ let progresso = 0;
+ let finalizado = false;
+
+ function definirProgresso(v) {
+  v = Math.max(0, Math.min(100, v));
+  progresso = v;
+  barra.style.width = v + '%';
+  porcentagem.textContent = Math.floor(v);
+ }
+
+ // Se o FiveM mandar o progresso real, usa ele. Senão, simula.
+ window.addEventListener('message', (e) => {
+  const d = e.data || {};
+  if (d.event === 'loadProgress' && typeof d.loadFraction === 'number') {
+   definirProgresso(d.loadFraction * 100);
+   if (d.loadFraction >= 1) finalizar();
+  }
+ });
+
+ function finalizar() {
+  if (finalizado) return;
+  finalizado = true;
+  definirProgresso(100);
+  statusEl.textContent = 'Pronto';
+  if (noFiveM) {
+   // Desliga a tela de loading do FiveM (manual shutdown)
+   try { window.invokeNative('0xA13C11E1B5C06E73'); } catch (err) {}
+  }
+ }
+
+ // Simulação (usada fora do FiveM / prévia no navegador)
+ if (!noFiveM) {
+  (function avancar() {
+   if (finalizado) return;
+   const restante = 97 - progresso;
+   progresso += Math.random() * (restante * 0.07) + 0.4;
+   if (progresso > 97) progresso = 97;
+   definirProgresso(progresso);
+   setTimeout(avancar, 320 + Math.random() * 480);
+  })();
+ }
 </script>
 </body>
 </html>
