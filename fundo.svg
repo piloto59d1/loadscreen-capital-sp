@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <!-- Fundo escuro com centro ligeiramente avermelhado -->
+    <radialGradient id="fundoGrad" cx="50%" cy="42%" r="85%">
+      <stop offset="0%" stop-color="#2b0707"/>
+      <stop offset="55%" stop-color="#140303"/>
+      <stop offset="100%" stop-color="#050101"/>
+    </radialGradient>
+
+    <!-- Textura grunge (ruido) aplicada aos elementos -->
+    <filter id="grunge" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="4" seed="7" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Versão mais forte, pra pinceladas -->
+    <filter id="grungeForte" x="-25%" y="-25%" width="150%" height="150%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="21" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="34" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Efeito de salpicado: quebra o preenchimento em pedacinhos -->
+    <filter id="salpicado" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <filter id="sombra" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000000" flood-opacity="0.85"/>
+    </filter>
+    <filter id="brilhoVermelho" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="18" flood-color="#e00000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="brilhoBranco" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#ffffff" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Fundo -->
+  <rect width="1920" height="1080" fill="url(#fundoGrad)"/>
+
+  <!-- Letras fantasma de fundo (estilo do logo) -->
+  <g font-family="Arial Black, Arial, sans-serif" font-weight="900" font-style="italic" opacity="0.35">
+    <text x="-40" y="330" font-size="300" fill="#570d0d" letter-spacing="-8" transform="rotate(-9)">CAPITAL</text>
+    <text x="980" y="1120" font-size="330" fill="#4a0b0b" letter-spacing="-6" transform="rotate(-7)">CAPITAL</text>
+    <text x="1320" y="360" font-size="260" fill="#6b1010" letter-spacing="-4" transform="rotate(9)">SP</text>
+    <text x="60" y="1060" font-size="280" fill="#5e0e0e" letter-spacing="-4" transform="rotate(6)">SP</text>
+  </g>
+
+  <!-- ====== PINCELADAS VERMELHAS ====== -->
+  <!-- Canto superior esquerdo -->
+  <g filter="url(#grungeForte)">
+    <polygon points="-80,-60 620,-120 560,120 -40,190" fill="#7a0c0c" opacity="0.9"/>
+    <polygon points="-60,120 480,20 520,180 -20,330" fill="#a31010" opacity="0.75"/>
+    <polygon points="120,-80 780,-160 700,60 180,120" fill="#c31212" opacity="0.55"/>
+    <polygon points="-90,380 260,300 300,470 -50,560" fill="#8f0e0e" opacity="0.5"/>
+    <polygon points="330,-70 520,-90 470,90 300,70" fill="#e00000" opacity="0.4"/>
+  </g>
+  <!-- Canto inferior direito -->
+  <g filter="url(#grungeForte)">
+    <polygon points="2000,1140 1300,1200 1360,960 1960,890" fill="#7a0c0c" opacity="0.9"/>
+    <polygon points="1980,960 1440,1060 1400,900 1940,750" fill="#a31010" opacity="0.75"/>
+    <polygon points="1800,1160 1140,1220 1220,1020 1740,960" fill="#c31212" opacity="0.55"/>
+    <polygon points="2010,700 1660,780 1620,610 1970,520" fill="#8f0e0e" opacity="0.5"/>
+    <polygon points="1590,1150 1400,1170 1450,990 1620,1010" fill="#e00000" opacity="0.4"/>
+  </g>
+  <!-- Riscos cruzados pelo meio (finos) -->
+  <g filter="url(#grungeForte)" opacity="0.5">
+    <polygon points="700,1180 780,1180 1300,-60 1220,-60" fill="#8f0e0e"/>
+    <polygon points="1180,1200 1240,1200 820,-80 760,-80" fill="#6b0f0f"/>
+  </g>
+
+  <!-- ====== SALPICOS DE TINTA ====== -->
+  <g fill="#c31212" filter="url(#salpicado)">
+    <circle cx="380" cy="240" r="16"/><circle cx="300" cy="330" r="8"/>
+    <circle cx="470" cy="180" r="6"/><circle cx="250" cy="180" r="11"/>
+    <circle cx="1520" cy="840" r="15"/><circle cx="1610" cy="760" r="9"/>
+    <circle cx="1440" cy="920" r="7"/><circle cx="1660" cy="880" r="12"/>
+    <circle cx="160" cy="760" r="10"/><circle cx="1780" cy="320" r="10"/>
+  </g>
+  <g fill="#ffffff" filter="url(#salpicado)" opacity="0.85">
+    <circle cx="760" cy="330" r="5"/><circle cx="1160" cy="740" r="6"/>
+    <circle cx="1240" cy="300" r="4"/><circle cx="700" cy="760" r="5"/>
+    <circle cx="560" cy="620" r="3"/><circle cx="1360" cy="560" r="3"/>
+  </g>
+
+  <!-- ====== COROA ====== -->
+  <g transform="translate(960 205)" filter="url(#sombra)">
+    <g filter="url(#grunge)">
+      <polygon points="-150,90 -175,-70 -80,10 -50,-120 0,-15 50,-120 80,10 175,-70 150,90" fill="#ffffff"/>
+      <rect x="-152" y="92" width="304" height="26" rx="10" fill="#e6e6e6"/>
+    </g>
+    <!-- Pontas esfareladas -->
+    <circle cx="-175" cy="-78" r="14" fill="#ffffff" filter="url(#salpicado)"/>
+    <circle cx="0" cy="-128" r="16" fill="#ffffff" filter="url(#salpicado)"/>
+    <circle cx="175" cy="-78" r="14" fill="#ffffff" filter="url(#salpicado)"/>
+    <!-- Gotejuras vermelhas -->
+    <g fill="#a31010">
+      <rect x="-120" y="118" width="9" height="52" rx="4"/>
+      <circle cx="-115" cy="174" r="6"/>
+      <rect x="-30" y="118" width="8" height="80" rx="4"/>
+      <circle cx="-26" cy="202" r="5"/>
+      <rect x="70" y="118" width="10" height="64" rx="5"/>
+      <circle cx="75" cy="186" r="6"/>
+      <rect x="130" y="118" width="7" height="40" rx="3.5"/>
+      <circle cx="133" cy="162" r="4.5"/>
+    </g>
+  </g>
+
+  <!-- ====== NOME: CAPITAL ====== -->
+  <g transform="translate(960 640) rotate(-2) skewX(-8)" filter="url(#sombra)">
+    <g filter="url(#grunge)">
+      <text x="0" y="0" text-anchor="middle"
+            font-family="Arial Black, Arial, sans-serif" font-weight="900"
+            font-size="250" fill="#ffffff" letter-spacing="2"
+            filter="url(#brilhoBranco)">CAPITAL</text>
+    </g>
+    <!-- Gotejuras brancas embaixo do nome -->
+    <g fill="#f2f2f2">
+      <rect x="-430" y="18" width="11" height="70" rx="5"/>
+      <circle cx="-424" cy="92" r="7"/>
+      <rect x="-290" y="18" width="8" height="44" rx="4"/>
+      <circle cx="-286" cy="66" r="5"/>
+      <rect x="-120" y="18" width="10" height="88" rx="5"/>
+      <circle cx="-115" cy="110" r="6.5"/>
+      <rect x="60" y="18" width="8" height="56" rx="4"/>
+      <circle cx="64" cy="78" r="5"/>
+      <rect x="250" y="18" width="11" height="76" rx="5"/>
+      <circle cx="256" cy="98" r="7"/>
+      <rect x="400" y="18" width="8" height="40" rx="4"/>
+      <circle cx="404" cy="62" r="5"/>
+    </g>
+  </g>
+
+  <!-- ====== NOME: SP (vermelho) ====== -->
+  <g transform="translate(1130 862) rotate(-3) skewX(-10)" filter="url(#sombra)">
+    <g filter="url(#grunge)">
+      <text x="0" y="0" text-anchor="middle"
+            font-family="Arial Black, Arial, sans-serif" font-weight="900"
+            font-size="240" fill="#d90000" letter-spacing="4"
+            filter="url(#brilhoVermelho)">SP</text>
+    </g>
+    <!-- Gotejuras vermelhas -->
+    <g fill="#b30000">
+      <rect x="-150" y="16" width="10" height="66" rx="5"/>
+      <circle cx="-145" cy="86" r="6"/>
+      <rect x="10" y="16" width="8" height="48" rx="4"/>
+      <circle cx="14" cy="68" r="5"/>
+      <rect x="140" y="16" width="9" height="58" rx="4.5"/>
+      <circle cx="145" cy="78" r="5.5"/>
+    </g>
+  </g>
+
+  <!-- Faixa vermelha sob o SP -->
+  <g filter="url(#grungeForte)">
+    <polygon points="850,910 1450,880 1470,935 830,950" fill="#a31010" opacity="0.85"/>
+    <polygon points="900,945 1380,930 1370,965 890,970" fill="#6b0f0f" opacity="0.7"/>
+  </g>
+
+  <!-- ====== TAGLINE ====== -->
+  <text x="960" y="1020" text-anchor="middle"
+        font-family="Arial, sans-serif" font-weight="700"
+        font-size="40" fill="#d90000" letter-spacing="26"
+        opacity="0.9">ROLEPLAY</text>
+</svg>
