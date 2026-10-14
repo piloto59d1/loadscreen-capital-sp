@@ -33,22 +33,6 @@
   background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 18%);
  }
 
- /* ===== TEXTO DE BAIXO (igual a referência) ===== */
- .embaixo {
-  position: fixed; z-index: 10;
-  bottom: 26px; left: 50%; transform: translateX(-50%);
-  text-align: center;
-  width: 100%;
- }
- .boas-vindas {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.85);
-  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
-  margin-bottom: 10px;
- }
-
  /* ===== BARRA ULTRA FINA na borda de baixo ===== */
  .barra-fundo {
   position: fixed; z-index: 12;
@@ -73,10 +57,6 @@
 
  <div class="overlay"></div>
 
- <div class="embaixo">
-  <div class="boas-vindas" id="frase">SEJA BEM-VINDO AO NOSSO MUNDO</div>
- </div>
-
  <div class="barra-fundo"><div class="barra" id="barra"></div></div>
 
  <audio id="musica" loop>
@@ -93,25 +73,6 @@
  const tocar = () => musica.play().catch(() => {});
  tocar();
  document.addEventListener('click', tocar, { once: true });
-
- // Frases de boas-vindas (igual a referência, gira devagar)
- const fraseEl = document.getElementById('frase');
- const frases = [
-  'SEJA BEM-VINDO AO NOSSO MUNDO',
-  'RESPEITO É A BASE DE TUDO',
-  'DEUS NO COMANDO SEMPRE',
-  'BOA JOGADA, BOA HISTORIA'
- ];
- let idx = 0;
- setInterval(() => {
-  fraseEl.style.opacity = 0;
-  setTimeout(() => {
-   idx = (idx + 1) % frases.length;
-   fraseEl.textContent = frases[idx];
-   fraseEl.style.opacity = 1;
-  }, 500);
- }, 5000);
- fraseEl.style.transition = 'opacity .5s ease';
 
  // Barra de progresso
  const barra = document.getElementById('barra');
